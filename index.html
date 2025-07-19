@@ -1,24 +1,435 @@
-<!DOCTYPE html><html lang="en"><head>
-  <meta charset="utf-8">
-  <title>Sanan Ansari</title>
+<!DOCTYPE html>
+<html lang="en">
 
-  <base href="/">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sanan Ansari – Portfolio + Resume AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script> window.addEventListener("load", () => { pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js"; }); </script>
+  <script type="module" crossorigin src="/assets/app-lR1XBfHg.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/app-CVHhXuDa.css">
+</head>
 
-  <meta name="color-scheme" content="light dark">
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="format-detection" content="telephone=no">
-  <meta name="msapplication-tap-highlight" content="no">
+<body class="bg-gray-100 min-h-screen font-sans"> <!-- 🌐 Navigation -->
+    <nav
+        class="bg-white shadow-md rounded-full max-w-4xl mx-auto mt-6 px-8 py-4 flex justify-between items-center text-gray-700 font-semibold text-base md:text-lg">
+        <div class="flex items-center space-x-3">
+            <div
+                class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-2xl shadow-inner">
+                💻</div>
+            <div> <span class="block text-gray-900 text-lg font-extrabold leading-tight">Sanan Ansari</span> <span
+                    class="block text-sm text-gray-500 font-medium">Frontend Developer</span> </div>
+        </div>
+        <div class="flex space-x-6 divide-x divide-gray-300">
+            <!-- <a href="javascript:void(0);" onclick="showSection('about')" class="px-4 hover:text-indigo-600 transition duration-200">About Sanan</a> -->
+            <a href="javascript:void(0);" onclick="showSection('terminal')"
+                class="px-4 hover:text-indigo-600 transition duration-200">Terminal Profolio</a> </div>
+    </nav> <!-- 📄 Flip Card -->
+    <div id="resume" class="flip-card max-w-4xl mx-auto mt-10" id="card">
+        <div class="flip-inner relative"> <!-- Front -->
+            <div class="flip-front p-10 bg-white rounded-2xl shadow-2xl space-y-6 relative z-10">
+                <h1 class="text-3xl font-extrabold text-center text-indigo-700">📄 ReadMyResume.ai</h1>
+                <p class="text-center text-gray-500 text-sm">Paste or upload your resume below to get AI improvements
+                </p>
+                <form id="resumeForm" class="space-y-6">
+                    <div> <label for="resumeText" class="block font-medium text-gray-700 mb-1">Your Resume Text</label>
+                        <textarea id="resumeText" rows="10" placeholder="Paste your resume here..."
+                            class="w-full px-4 py-3 border rounded-md focus:ring-2 focus:ring-indigo-300 text-sm resize-none"></textarea>
+                    </div>
+                    <div> <label for="resumeFile" class="block mb-2 text-sm font-semibold text-gray-700">📤 Upload
+                            Resume <span class="text-gray-400 text-xs">(PDF or DOCX)</span></label>
+                        <div onclick="document.getElementById('resumeFile').click()"
+                            class="w-full border-2 border-dashed border-indigo-300 rounded-xl p-6 cursor-pointer text-center transition hover:border-indigo-500 hover:bg-indigo-50">
+                            <div class="flex flex-col items-center space-y-2"> <svg class="w-10 h-10 text-indigo-500"
+                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12V4m0 0L8 8m4-4l4 4" />
+                                </svg>
+                                <p class="text-sm text-gray-500">Click or drag & drop your resume here</p>
+                                <p class="text-xs text-gray-400">Accepted: .pdf, .docx</p>
+                            </div>
+                        </div> <input type="file" id="resumeFile" accept=".pdf,.docx" onchange="handleFileUpload(event)"
+                            class="hidden" />
+                    </div>
+                    <div class="text-center"> <button type="button" onclick="reviseResume()"
+                            class="bg-indigo-600 text-white px-6 py-3 rounded-lg shadow hover:bg-indigo-700 transition">
+                            ✨ Revise My Resume </button> </div>
+                </form>
+            </div> <!-- Back -->
+            <div class="flip-back p-10 bg-white rounded-2xl shadow-2xl space-y-6 min-h-[400px]">
+                <h2 class="text-2xl font-bold text-center text-indigo-700">✅ AI Suggestions</h2>
+                <div id="aiOutput"
+                    class="whitespace-pre-wrap text-gray-700 text-sm border p-4 rounded bg-gray-50 min-h-[200px]">
+                    Loading AI response... </div>
+                <div class="text-center"> <button onclick="goBack()"
+                        class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition">🔁 Go
+                        Back</button> </div>
+            </div>
+        </div>
+    </div> <!-- 👋 About Section -->
+    <section id="about" class="max-w-4xl mx-auto mt-16 bg-white p-8 rounded-2xl shadow-md space-y-6">
+        <div id="aboutIntro">
+            <h2 class="text-2xl font-bold text-indigo-700">👋 About Sanan</h2>
+            <p class="text-gray-700"> I'm <strong>Sanan Ansari</strong>, a passionate <span
+                    class="text-indigo-600 font-semibold">Frontend Developer</span> who loves crafting modern UIs and
+                AI-powered tools. I graduated in <strong>2020</strong> from <a href="https://aiktc.ac.in/"
+                    class="text-indigo-600 underline" target="_blank">AIKTC</a> and currently specialize in Angular,
+                Tailwind CSS, Spring Boot, and Ionic. </p>
+        </div> <!-- Timeline -->
+        <div class="mt-8">
+            <h2 class="text-2xl font-bold text-indigo-700 mb-4">📆 Career Timeline</h2>
+            <div class="relative"> <!-- 👇 Animated Dot 👇 -->
+                <div class="flex justify-center items-center min-h-screen bg-gradient-to-br to-white py-16 px-4">
+                    <div class="relative w-full max-w-5xl"> <!-- 🎯 Vertical Line -->
+                        <div
+                            class="absolute left-1/2 top-0 h-full border-l-4 border-dashed border-indigo-300 transform -translate-x-1/2 z-0">
+                        </div> <!-- 🗓️ Timeline Items -->
+                        <div class="space-y-28 relative z-10"> <!-- 2020 -->
+                            <div class="relative flex items-center">
+                                <div class="w-1/2 pr-8 text-right">
+                                    <div
+                                        class="bg-white rounded-xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300">
+                                        <time class="text-xs text-gray-500">2020</time>
+                                        <h3 class="text-xl font-bold text-indigo-700">Graduated from AIKTC</h3>
+                                        <p class="text-sm text-gray-600 mt-1">Four years of learning forged not just a
+                                            degree, but a disciplined curiosity to build for the real world.</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 bg-indigo-600 w-6 h-6 rounded-full border-4 border-white shadow-md z-20">
+                                </div>
+                                <div class="w-1/2"></div>
+                            </div> <!-- 2021 -->
+                            <div class="relative flex items-center">
+                                <div class="w-1/2"></div>
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 bg-indigo-600 w-6 h-6 rounded-full border-4 border-white shadow-md z-20">
+                                </div>
+                                <div class="w-1/2 pl-8">
+                                    <div
+                                        class="bg-white rounded-xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300">
+                                        <time class="text-xs text-gray-500">2021</time>
+                                        <h3 class="text-xl font-bold text-indigo-700">Junior Software Engineer</h3>
+                                        <p class="text-sm text-gray-600 mt-1">Took my first leap into the industry—where
+                                            design met logic, and every pixel mattered.</p>
+                                    </div>
+                                </div>
+                            </div> <!-- 2022 -->
+                            <div class="relative flex items-center">
+                                <div class="w-1/2 pr-8 text-right">
+                                    <div
+                                        class="bg-white rounded-xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300">
+                                        <time class="text-xs text-gray-500">2022</time>
+                                        <h3 class="text-xl font-bold text-indigo-700">Software Engineer at Triarq</h3>
+                                        <p class="text-sm text-gray-600 mt-1">Built systems that bridged health and
+                                            technology, focusing on clean architecture and real-world impact.</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 bg-indigo-600 w-6 h-6 rounded-full border-4 border-white shadow-md z-20">
+                                </div>
+                                <div class="w-1/2"></div>
+                            </div> <!-- 2025 -->
+                            <div class="relative flex items-center">
+                                <div class="w-1/2"></div>
+                                <div
+                                    class="absolute left-1/2 transform -translate-x-1/2 bg-indigo-600 w-6 h-6 rounded-full border-4 border-white shadow-md z-20">
+                                </div>
+                                <div class="w-1/2 pl-8">
+                                    <div
+                                        class="bg-white rounded-xl shadow-xl p-6 hover:shadow-2xl transition-all duration-300">
+                                        <time class="text-xs text-gray-500">2025</time>
+                                        <h3 class="text-xl font-bold text-indigo-700">Started Personal AI Projects</h3>
+                                        <p class="text-sm text-gray-600 mt-1">Translating ideas into impact — building
+                                            tools that empower, simplify, and resonate with everyday lives.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Button -->
+        <div class="text-center"> <button onclick="toggleDetails()" id="toggleBtn"
+                class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-full shadow-md hover:bg-indigo-700 transition">
+                🧠 Know Me Better </button> </div> <!-- Full Details (Initially Hidden) -->
+        <div id="aboutDetails" class="hidden space-y-6 mt-6"> <!-- Work Experience -->
+            <div>
+                <h2 class="text-2xl font-bold text-indigo-700 mb-4">💼 Work Experience</h2>
+                <div class="space-y-6"> <!-- Experience Card 1 -->
+                    <div
+                        class="bg-white/80 backdrop-blur-md border border-indigo-100 shadow-lg rounded-xl p-5 transition hover:shadow-2xl">
+                        <h3 class="text-lg font-semibold text-indigo-800">Software Engineer</h3>
+                        <p class="text-sm text-gray-600"> at <a href="http://triarqhealth.com/" target="_blank"
+                                class="text-indigo-600 underline font-medium">Triarq Health LLP</a> </p>
+                        <p class="text-gray-500 text-sm mt-2">Contributed to healthcare systems with Angular + Spring
+                            Boot. Crafted modular UI & improved performance.</p>
+                    </div> <!-- Experience Card 2 -->
+                    <div
+                        class="bg-white/80 backdrop-blur-md border border-indigo-100 shadow-lg rounded-xl p-5 transition hover:shadow-2xl">
+                        <h3 class="text-lg font-semibold text-indigo-800">Junior Software Engineer</h3>
+                        <p class="text-sm text-gray-600"> at <a href="http://theschnellapps.com/" target="_blank"
+                                class="text-indigo-600 underline font-medium">Schnell Apps Pvt Ltd</a> </p>
+                        <p class="text-gray-500 text-sm mt-2">Built UI for web apps, solved real-world bugs, and
+                            collaborated with cross-functional teams in Agile sprints.</p>
+                    </div> <!-- Experience Card 3 -->
+                    <div
+                        class="bg-white/80 backdrop-blur-md border border-indigo-100 shadow-lg rounded-xl p-5 transition hover:shadow-2xl">
+                        <h3 class="text-lg font-semibold text-indigo-800">Software Intern</h3>
+                        <p class="text-sm text-gray-600">at InventersCorp</p>
+                        <p class="text-gray-500 text-sm mt-2">Worked on IoT devices, REST APIs, and frontend prototypes
+                            — a full-stack sandbox playground.</p>
+                    </div>
+                </div>
+            </div> <!-- Side Projects -->
+            <div>
+                <h2 class="text-2xl font-bold text-indigo-700 mb-4">🧪 Side Projects</h2>
+                <div class="grid gap-6 md:grid-cols-2"> <!-- Placeholder Card -->
+                    <div
+                        class="bg-gradient-to-br from-indigo-100 to-white border border-indigo-200 p-5 rounded-xl shadow-md hover:shadow-xl transition duration-300">
+                        <div class="flex items-center space-x-3 mb-2"> <span class="text-indigo-600 text-lg">🚧</span>
+                            <h3 class="text-lg font-semibold text-indigo-800">In Progress...</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm">Something cool, crazy, and probably AI-powered is brewing. Stay
+                            tuned 👀</p>
+                    </div> <!-- Coming Soon Card -->
+                    <div
+                        class="bg-gradient-to-br from-white via-indigo-50 to-white border border-indigo-100 p-5 rounded-xl shadow-md hover:shadow-xl transition duration-300">
+                        <div class="flex items-center space-x-3 mb-2"> <span class="text-indigo-600 text-lg">✨</span>
+                            <h3 class="text-lg font-semibold text-indigo-800">Coming Soon</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm">Expect powerful tools built with Angular + AI + insane UX
+                            finesse. They're almost here 🚀</p>
+                    </div>
+                </div>
+            </div> <!-- Technical Skills -->
+            <div>
+                <h2 class="text-2xl font-bold text-indigo-700">🛠️ Technical Skills</h2>
+                <div class="mt-4 space-y-6"> <!-- Angular -->
+                    <div class="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-lg">
+                        <div class="flex justify-between items-center mb-1">
+                            <p class="text-sm font-semibold text-gray-700">Angular</p> <span
+                                class="text-xs text-indigo-600 font-bold">90%</span>
+                        </div>
+                        <div class="relative w-full mt-6">
+                            <div
+                                class="absolute -top-2 left-[90%] -translate-x-1/2 w-6 h-6 bg-white p-0.5 rounded-full shadow">
+                                <svg viewBox="0 0 250 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill="#DD0031" d="M125 0L245 40l-20 170-100 40-100-40L5 40 125 0z" />
+                                    <path fill="#C3002F" d="M125 0v250l100-40 20-170L125 0z" />
+                                    <path fill="#FFF"
+                                        d="M125 30l-62 166h25l12-35h50l12 35h25L125 30zm-12 95l18-52 18 52h-36z" />
+                                </svg> </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                <div class="h-full rounded-full bg-gradient-to-r from-red-500 via-orange-500 to-yellow-400 transition-all duration-500"
+                                    style="width: 90%;"></div>
+                            </div>
+                        </div>
+                    </div> <!-- Spring Boot -->
+                    <div class="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-lg">
+                        <div class="flex justify-between items-center mb-1">
+                            <p class="text-sm font-semibold text-gray-700">Spring Boot</p> <span
+                                class="text-xs text-indigo-600 font-bold">70%</span>
+                        </div>
+                        <div class="relative w-full mt-6">
+                            <div
+                                class="absolute -top-2 left-[70%] -translate-x-1/2 w-6 h-6 bg-white p-0.5 rounded-full shadow">
+                                <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill="#6DB33F"
+                                        d="M502.3 131.4c-13.3-20-43.6-57.5-101.3-77.8-56.2-19.7-105.7-3.4-131.6 9.3C240 63.7 229.3 72 210.5 86.1c-3.6 2.6-7.2 5.2-10.8 8-45.2 36.5-74.1 81-92.5 123.4-24.1 55.9-27 102.4-23.3 127.4 1.8 12.2 4.4 25.1 12.3 42.4 9.2 20.2 21.5 37.5 35.6 52 10.2 10.6 20.8 18.7 30.3 25.2 21.8 14.8 45.1 24.3 69.3 28.7 25.3 4.6 50.8 3.4 74.3-3.5 24.6-7.3 48.5-21.2 71.1-41.4 38.2-34.3 64.3-82.7 72.9-142.4 4.3-29.4 5.8-56.8 4.6-80.9-1.5-30.5-7.2-58.6-17.2-84.9z" />
+                                    <path fill="#fff"
+                                        d="M373.3 230.6c-5.7-12.8-16.7-23-30.1-27.4-11.4-3.7-23.5-3.7-34.9 0l-63.6 18.5c-8.3 2.4-12.7 11.1-10.3 19.3 2.4 8.3 11.1 12.7 19.3 10.3l63.6-18.5c4.8-1.4 9.9-1.4 14.7 0 4.8 1.5 8.9 4.8 11.4 9.4 4.2 8.5.5 18.8-8 23l-67.1 29.5c-7.9 3.5-11.4 12.7-7.9 20.6s12.7 11.4 20.6 7.9l67.1-29.5c22.2-9.7 32.2-35.4 22.5-57.6z" />
+                                </svg> </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                <div class="h-full rounded-full bg-gradient-to-r from-green-400 via-lime-400 to-emerald-500 transition-all duration-500"
+                                    style="width: 70%;"></div>
+                            </div>
+                        </div>
+                    </div> <!-- Problem Solving -->
+                    <div class="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-lg">
+                        <div class="flex justify-between items-center mb-1">
+                            <p class="text-sm font-semibold text-gray-700">Problem Solving</p> <span
+                                class="text-xs text-indigo-600 font-bold">95%</span>
+                        </div>
+                        <div class="relative w-full mt-6">
+                            <div
+                                class="absolute -top-2 left-[95%] -translate-x-1/2 w-6 h-6 bg-white p-0.5 rounded-full shadow">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M9 2a5 5 0 0 0-5 5v1a5 5 0 0 0 0 10v1a3 3 0 0 0 3 3h2V2zM15 2h-2v20h2a3 3 0 0 0 3-3v-1a5 5 0 0 0 0-10V7a5 5 0 0 0-5-5z" />
+                                </svg> </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                <div class="h-full rounded-full bg-gradient-to-r from-yellow-400 via-red-400 to-pink-500 transition-all duration-500"
+                                    style="width: 95%;"></div>
+                            </div>
+                        </div>
+                    </div> <!-- GitHub -->
+                    <div class="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-lg">
+                        <div class="flex justify-between items-center mb-1">
+                            <p class="text-sm font-semibold text-gray-700">GitHub & Version Control</p> <span
+                                class="text-xs text-indigo-600 font-bold">90%</span>
+                        </div>
+                        <div class="relative w-full mt-6">
+                            <div
+                                class="absolute -top-2 left-[90%] -translate-x-1/2 w-6 h-6 bg-white p-0.5 rounded-full shadow">
+                                <svg viewBox="0 0 24 24" fill="currentColor" class="text-gray-800">
+                                    <path
+                                        d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.4.7-4.1-1.6-4.1-1.6a3.2 3.2 0 0 0-1.3-1.7c-1.1-.7 0-.7 0-.7a2.6 2.6 0 0 1 1.9 1.3 2.6 2.6 0 0 0 3.5 1 2.6 2.6 0 0 1 .8-1.6c-2.7-.3-5.5-1.3-5.5-5.7 0-1.2.5-2.3 1.2-3.2a4.4 4.4 0 0 1 .1-3.2s1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.5 1.1.5 2.4.1 3.2a4.6 4.6 0 0 1 1.2 3.2c0 4.5-2.8 5.5-5.5 5.7a3 3 0 0 1 .9 2.3v3.4c0 .3.2.7.8.6A12 12 0 0 0 12 .3" />
+                                </svg> </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                <div class="h-full rounded-full bg-gradient-to-r from-gray-700 via-indigo-500 to-indigo-400 transition-all duration-500"
+                                    style="width: 90%;"></div>
+                            </div>
+                        </div>
+                    </div> <!-- Ionic -->
+                    <div class="bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-lg">
+                        <div class="flex justify-between items-center mb-1">
+                            <p class="text-sm font-semibold text-gray-700">Ionic & Mobile UI</p> <span
+                                class="text-xs text-indigo-600 font-bold">75%</span>
+                        </div>
+                        <div class="relative w-full mt-6">
+                            <div
+                                class="absolute -top-2 left-[75%] -translate-x-1/2 w-6 h-6 bg-white p-0.5 rounded-full shadow">
+                                <svg viewBox="0 0 512 512" fill="#428CFF">
+                                    <path
+                                        d="M256 64a192 192 0 1 0 192 192A192.2 192.2 0 0 0 256 64Zm0 336a144 144 0 1 1 144-144a144.16 144.16 0 0 1-144 144Zm104-208a24 24 0 1 0-24-24a24 24 0 0 0 24 24Z" />
+                                </svg> </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                <div class="h-full rounded-full bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-500 transition-all duration-500"
+                                    style="width: 75%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- Books & Blogs -->
+            <div>
+                <h2 class="text-2xl font-bold text-indigo-700 mb-4">📚 Book & Blog Interests</h2>
+                <p class="text-gray-700 mb-4">A glimpse into my bookshelf & blog space — where stories, philosophies,
+                    and ideas converge:</p>
+                <div class="grid gap-4 md:grid-cols-2"> <!-- Book Card 1 -->
+                    <div class="bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition">
+                        <div class="flex items-center space-x-2 mb-1"> <span class="text-indigo-500">📖</span>
+                            <h3 class="font-semibold text-indigo-700">A Thousand Splendid Suns</h3>
+                        </div>
+                        <p class="text-sm text-gray-600">Emotionally rich, a timeless tale of love and resilience.</p>
+                    </div> <!-- Book Card 2 -->
+                    <div class="bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition">
+                        <div class="flex items-center space-x-2 mb-1"> <span class="text-indigo-500">🧠</span>
+                            <h3 class="font-semibold text-indigo-700">Man’s Search for Meaning</h3>
+                        </div>
+                        <p class="text-sm text-gray-600">A philosophical blueprint for purpose, survival, and inner
+                            strength.</p>
+                    </div> <!-- Book Card 3 -->
+                    <div class="bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition">
+                        <div class="flex items-center space-x-2 mb-1"> <span class="text-indigo-500">🌲</span>
+                            <h3 class="font-semibold text-indigo-700">Norwegian Wood</h3>
+                        </div>
+                        <p class="text-sm text-gray-600">Melancholic, beautiful, and deeply introspective. A Murakami
+                            classic.</p>
+                    </div> <!-- Book Card 4 -->
+                    <div class="bg-white border border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition">
+                        <div class="flex items-center space-x-2 mb-1"> <span class="text-indigo-500">🌟</span>
+                            <h3 class="font-semibold text-indigo-700">The Alchemist</h3>
+                        </div>
+                        <p class="text-sm text-gray-600">An allegorical journey that reminds us to chase our personal
+                            legend.</p>
+                    </div>
+                </div> <!-- Blog link -->
+                <div class="mt-8 p-4 bg-indigo-50 border-l-4 border-indigo-400 rounded-xl shadow-sm">
+                    <div class="flex items-start space-x-3"> <span class="text-indigo-500 text-xl">✍️</span>
+                        <div>
+                            <p class="text-gray-700"> I regularly share thoughts, insights, and personal reflections on
+                                <a href="https://medium.com/@sananansari" target="_blank"
+                                    class="text-indigo-600 font-medium underline hover:text-indigo-800 transition">
+                                    Medium </a> — drop by and explore. </p>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- Fun Section -->
+            <div class="space-y-10"> <!-- What I’m Doing Now -->
+                <div class="bg-white border border-indigo-100 shadow-sm rounded-xl p-5 hover:shadow-md transition">
+                    <h2 class="text-2xl font-bold text-indigo-700 mb-2">🎯 What I’m Doing Now</h2>
+                    <p class="text-gray-700">Currently building an <span class="font-semibold text-indigo-600">AI-based
+                            side project</span> and sharing thoughts via technical blogs.</p>
+                </div> <!-- Fun Fact -->
+                <div class="bg-white border border-indigo-100 shadow-sm rounded-xl p-5 hover:shadow-md transition">
+                    <h2 class="text-2xl font-bold text-indigo-700 mb-2">🎉 Fun Fact</h2>
+                    <p class="text-gray-700">Built a full-stack web app in just <span
+                            class="font-semibold text-indigo-600">36 hours</span> during a hackathon — fueled by nothing
+                        but chai ☕ and grit.</p>
+                </div> <!-- Developer Links -->
+                <div class="bg-white border border-indigo-100 shadow-sm rounded-xl p-5 hover:shadow-md transition">
+                    <h3 class="text-xl font-semibold text-indigo-600 mb-2">🔗 My Developer Links</h3>
+                    <ul class="space-y-1 text-gray-700">
+                        <li> <span class="font-medium">GitHub:</span> <a href="https://github.com/sannanansari"
+                                target="_blank" class="text-indigo-600 underline hover:text-indigo-800">sannanansari</a>
+                        </li>
+                        <li> <span class="font-medium">Medium:</span> <a href="https://medium.com/@sananansari"
+                                target="_blank" class="text-indigo-600 underline hover:text-indigo-800">sananansari</a>
+                        </li>
+                        <li> <span class="font-medium">LinkedIn:</span> <a
+                                href="https://www.linkedin.com/in/sanan-ansari" target="_blank"
+                                class="text-indigo-600 underline hover:text-indigo-800">LinkedIn Profile</a> </li>
+                    </ul>
+                </div> <!-- Tools, Editors & Platforms -->
+                <div class="bg-white border border-indigo-100 shadow-sm rounded-xl p-5 hover:shadow-md transition">
+                    <h3 class="text-xl font-semibold text-indigo-600 mb-3">🛠 Tools, Editors & Platforms</h3>
+                    <div class="grid sm:grid-cols-2 gap-4 text-gray-700">
+                        <div>
+                            <p class="font-medium text-indigo-500">Editors</p>
+                            <ul class="list-disc list-inside text-sm ml-2">
+                                <li>VS Code</li>
+                                <li>Eclipse</li>
+                                <li>Sublime Text</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="font-medium text-indigo-500">Platforms</p>
+                            <ul class="list-disc list-inside text-sm ml-2">
+                                <li>Firebase</li>
+                                <li>GitHub</li>
+                                <li>Google Cloud</li>
+                                <li>Stack Overflow</li>
+                                <li>Quora</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="font-medium text-indigo-500">OS Playground</p>
+                            <ul class="list-disc list-inside text-sm ml-2">
+                                <li>Linux Mint</li>
+                                <li>Kali Linux</li>
+                                <li>Windows</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+    <section id="terminal"
+        class="max-w-4xl mx-auto bg-zinc-900 text-green-200 p-6 rounded-xl shadow-lg mt-16 font-mono text-sm">
+        <!-- Terminal Welcome -->
+        <div>
+            <div><span class="text-green-400">sanan@terminal</span>:<span class="text-blue-400">~</span>$ welcome</div>
+            <div class="ml-4 text-zinc-300">Welcome to my interactive terminal-style portfolio! Type help for a
+                experience</div>
+        </div> <!-- Terminal Output Area -->
+        <div id="terminalOutput" class="space-y-2 mt-4"></div> <!-- Input Prompt -->
+        <div class="mt-4 flex items-center"> <span class="text-green-400">sanan@terminal</span>:<span
+                class="text-blue-400">~</span>$ <input type="text" id="terminalInput" placeholder="type a command..."
+                autofocus
+                class="ml-2 w-full bg-transparent border-none outline-none text-green-200 placeholder-zinc-500" />
+        </div>
+    </section> <!-- 📬 Contact -->
+    <section class="max-w-4xl mx-auto my-16 text-center">
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">Want to collaborate?</h3>
+        <p class="text-gray-600 mb-6">Let’s work together on cool dev tools, AI resumes, or portfolio projects.</p> <a
+            href="mailto:sanan@example.com"
+            class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-full shadow hover:bg-indigo-700 transition">
+            📬 Contact Me </a>
+    </section>
+</body>
 
-  <link rel="icon" type="image/png" href="assets/icon/favicon.png">
-
-  <!-- add to homescreen for ios -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<style>:root{--ion-color-primary:#3880ff;--ion-color-primary-rgb:56, 128, 255;--ion-color-primary-contrast:#ffffff;--ion-color-primary-contrast-rgb:255, 255, 255;--ion-color-primary-shade:#3171e0;--ion-color-primary-tint:#4c8dff;--ion-color-secondary:#3dc2ff;--ion-color-secondary-rgb:61, 194, 255;--ion-color-secondary-contrast:#ffffff;--ion-color-secondary-contrast-rgb:255, 255, 255;--ion-color-secondary-shade:#36abe0;--ion-color-secondary-tint:#50c8ff;--ion-color-tertiary:#5260ff;--ion-color-tertiary-rgb:82, 96, 255;--ion-color-tertiary-contrast:#ffffff;--ion-color-tertiary-contrast-rgb:255, 255, 255;--ion-color-tertiary-shade:#4854e0;--ion-color-tertiary-tint:#6370ff;--ion-color-success:#2dd36f;--ion-color-success-rgb:45, 211, 111;--ion-color-success-contrast:#ffffff;--ion-color-success-contrast-rgb:255, 255, 255;--ion-color-success-shade:#28ba62;--ion-color-success-tint:#42d77d;--ion-color-warning:#ffc409;--ion-color-warning-rgb:255, 196, 9;--ion-color-warning-contrast:#000000;--ion-color-warning-contrast-rgb:0, 0, 0;--ion-color-warning-shade:#e0ac08;--ion-color-warning-tint:#ffca22;--ion-color-danger:#eb445a;--ion-color-danger-rgb:235, 68, 90;--ion-color-danger-contrast:#ffffff;--ion-color-danger-contrast-rgb:255, 255, 255;--ion-color-danger-shade:#cf3c4f;--ion-color-danger-tint:#ed576b;--ion-color-dark:#222428;--ion-color-dark-rgb:34, 36, 40;--ion-color-dark-contrast:#ffffff;--ion-color-dark-contrast-rgb:255, 255, 255;--ion-color-dark-shade:#1e2023;--ion-color-dark-tint:#383a3e;--ion-color-medium:#92949c;--ion-color-medium-rgb:146, 148, 156;--ion-color-medium-contrast:#ffffff;--ion-color-medium-contrast-rgb:255, 255, 255;--ion-color-medium-shade:#808289;--ion-color-medium-tint:#9d9fa6;--ion-color-light:#f4f5f8;--ion-color-light-rgb:244, 245, 248;--ion-color-light-contrast:#000000;--ion-color-light-contrast-rgb:0, 0, 0;--ion-color-light-shade:#d7d8da;--ion-color-light-tint:#f5f6f9}@media (prefers-color-scheme: dark){body{--ion-color-primary:#428cff;--ion-color-primary-rgb:66,140,255;--ion-color-primary-contrast:#ffffff;--ion-color-primary-contrast-rgb:255,255,255;--ion-color-primary-shade:#3a7be0;--ion-color-primary-tint:#5598ff;--ion-color-secondary:#50c8ff;--ion-color-secondary-rgb:80,200,255;--ion-color-secondary-contrast:#ffffff;--ion-color-secondary-contrast-rgb:255,255,255;--ion-color-secondary-shade:#46b0e0;--ion-color-secondary-tint:#62ceff;--ion-color-tertiary:#6a64ff;--ion-color-tertiary-rgb:106,100,255;--ion-color-tertiary-contrast:#ffffff;--ion-color-tertiary-contrast-rgb:255,255,255;--ion-color-tertiary-shade:#5d58e0;--ion-color-tertiary-tint:#7974ff;--ion-color-success:#2fdf75;--ion-color-success-rgb:47,223,117;--ion-color-success-contrast:#000000;--ion-color-success-contrast-rgb:0,0,0;--ion-color-success-shade:#29c467;--ion-color-success-tint:#44e283;--ion-color-warning:#ffd534;--ion-color-warning-rgb:255,213,52;--ion-color-warning-contrast:#000000;--ion-color-warning-contrast-rgb:0,0,0;--ion-color-warning-shade:#e0bb2e;--ion-color-warning-tint:#ffd948;--ion-color-danger:#ff4961;--ion-color-danger-rgb:255,73,97;--ion-color-danger-contrast:#ffffff;--ion-color-danger-contrast-rgb:255,255,255;--ion-color-danger-shade:#e04055;--ion-color-danger-tint:#ff5b71;--ion-color-dark:#f4f5f8;--ion-color-dark-rgb:244,245,248;--ion-color-dark-contrast:#000000;--ion-color-dark-contrast-rgb:0,0,0;--ion-color-dark-shade:#d7d8da;--ion-color-dark-tint:#f5f6f9;--ion-color-medium:#989aa2;--ion-color-medium-rgb:152,154,162;--ion-color-medium-contrast:#000000;--ion-color-medium-contrast-rgb:0,0,0;--ion-color-medium-shade:#86888f;--ion-color-medium-tint:#a2a4ab;--ion-color-light:#222428;--ion-color-light-rgb:34,36,40;--ion-color-light-contrast:#ffffff;--ion-color-light-contrast-rgb:255,255,255;--ion-color-light-shade:#1e2023;--ion-color-light-tint:#383a3e}}html{--ion-font-family:var(--ion-default-font)}body{background:var(--ion-background-color)}@supports (padding-top: 20px){html{--ion-safe-area-top:var(--ion-statusbar-padding)}}@supports (padding-top: constant(safe-area-inset-top)){html{--ion-safe-area-top:constant(safe-area-inset-top);--ion-safe-area-bottom:constant(safe-area-inset-bottom);--ion-safe-area-left:constant(safe-area-inset-left);--ion-safe-area-right:constant(safe-area-inset-right)}}@supports (padding-top: env(safe-area-inset-top)){html{--ion-safe-area-top:env(safe-area-inset-top);--ion-safe-area-bottom:env(safe-area-inset-bottom);--ion-safe-area-left:env(safe-area-inset-left);--ion-safe-area-right:env(safe-area-inset-right)}}*{box-sizing:border-box;-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}html{width:100%;height:100%;-webkit-text-size-adjust:100%;text-size-adjust:100%}html:not(.hydrated) body{display:none}body{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;margin:0;padding:0;position:fixed;width:100%;max-width:100%;height:100%;max-height:100%;transform:translateZ(0);text-rendering:optimizeLegibility;overflow:hidden;touch-action:manipulation;-webkit-user-drag:none;-ms-content-zooming:none;word-wrap:break-word;overscroll-behavior-y:none;-webkit-text-size-adjust:none;text-size-adjust:none}html{font-family:var(--ion-font-family)}@charset "UTF-8";:root{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--bs-black:#000;--bs-white:#fff;--bs-gray:#6c757d;--bs-gray-dark:#343a40;--bs-gray-100:#f8f9fa;--bs-gray-200:#e9ecef;--bs-gray-300:#dee2e6;--bs-gray-400:#ced4da;--bs-gray-500:#adb5bd;--bs-gray-600:#6c757d;--bs-gray-700:#495057;--bs-gray-800:#343a40;--bs-gray-900:#212529;--bs-primary:#0d6efd;--bs-secondary:#6c757d;--bs-success:#198754;--bs-info:#0dcaf0;--bs-warning:#ffc107;--bs-danger:#dc3545;--bs-light:#f8f9fa;--bs-dark:#212529;--bs-primary-rgb:13, 110, 253;--bs-secondary-rgb:108, 117, 125;--bs-success-rgb:25, 135, 84;--bs-info-rgb:13, 202, 240;--bs-warning-rgb:255, 193, 7;--bs-danger-rgb:220, 53, 69;--bs-light-rgb:248, 249, 250;--bs-dark-rgb:33, 37, 41;--bs-white-rgb:255, 255, 255;--bs-black-rgb:0, 0, 0;--bs-body-color-rgb:33, 37, 41;--bs-body-bg-rgb:255, 255, 255;--bs-font-sans-serif:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";--bs-font-monospace:SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;--bs-gradient:linear-gradient(180deg, rgba(255, 255, 255, .15), rgba(255, 255, 255, 0));--bs-body-font-family:var(--bs-font-sans-serif);--bs-body-font-size:1rem;--bs-body-font-weight:400;--bs-body-line-height:1.5;--bs-body-color:#212529;--bs-body-bg:#fff;--bs-border-width:1px;--bs-border-style:solid;--bs-border-color:#dee2e6;--bs-border-color-translucent:rgba(0, 0, 0, .175);--bs-border-radius:.375rem;--bs-border-radius-sm:.25rem;--bs-border-radius-lg:.5rem;--bs-border-radius-xl:1rem;--bs-border-radius-2xl:2rem;--bs-border-radius-pill:50rem;--bs-link-color:#0d6efd;--bs-link-hover-color:#0a58ca;--bs-code-color:#d63384;--bs-highlight-bg:#fff3cd}*,*:before,*:after{box-sizing:border-box}@media (prefers-reduced-motion: no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:var(--bs-body-font-family);font-size:var(--bs-body-font-size);font-weight:var(--bs-body-font-weight);line-height:var(--bs-body-line-height);color:var(--bs-body-color);text-align:var(--bs-body-text-align);background-color:var(--bs-body-bg);-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:rgba(0,0,0,0)}</style><link rel="stylesheet" href="styles.7ef2e85131aeb63f.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.7ef2e85131aeb63f.css"></noscript></head>
-
-<body>
-  <app-root></app-root>
-<script src="runtime.7acb400fba023958.js" type="module"></script><script src="polyfills.f946d3779880c5da.js" type="module"></script><script src="scripts.9c71d6d03d53bfcb.js" defer></script><script src="main.ae5c2fe87b395d67.js" type="module"></script>
-
-
-</body></html>
+</html>
